@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
     }   // Main Method
 
+
+
+    public  void clickSave(View view) {
+
+    }
+
     public void clickSignIn(View view) {
 
         userString = userEditText.getText().toString().trim();
