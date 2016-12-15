@@ -7,6 +7,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,6 +29,10 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
     private double latADouble, lngADouble, updateLatADouble, updateLngADouble;
     private String[] loginStrings;
     private TextView textView;
+    private EditText editText;
+    private ImageView imageView, takePhotoImageView;
+    private String nameImageString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,9 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.my_layout);
 
         textView = (TextView) findViewById(R.id.textView5);
+        editText = (EditText) findViewById(R.id.editText6);
+        imageView = (ImageView) findViewById(R.id.imageView2);
+        takePhotoImageView = (ImageView) findViewById(R.id.imageView4);
 
         //Setup
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -52,6 +62,22 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
 
     }   // Main Method
+
+    public void clickSave(View view) {
+
+        nameImageString = editText.getText().toString().trim();
+
+        //check space
+        if (nameImageString.equals("")) {
+            //if input
+            MyAlert myAlert = new MyAlert(ServiceActivity.this,
+                    getResources().getString(R.string.title_have_space),
+                    getResources().getString(R.string.message_have_space),
+                    R.drawable.doremon48);
+            myAlert.myDialog();
+        }
+    } // click save
+
 
     @Override
     protected void onResume() {
