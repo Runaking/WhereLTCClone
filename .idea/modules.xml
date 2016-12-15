@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WhereLTC.iml" filepath="$PROJECT_DIR$/WhereLTC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WhereLTCClone.iml" filepath="$PROJECT_DIR$/WhereLTCClone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
