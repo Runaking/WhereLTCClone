@@ -1,10 +1,15 @@
 package appewtc.masterung.whereltc;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +37,8 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
     private EditText editText;
     private ImageView imageView, takePhotoImageView;
     private String nameImageString;
+    private Uri uri;
+    private boolean aBoolean = true;
 
 
     @Override
@@ -43,6 +50,7 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
         editText = (EditText) findViewById(R.id.editText6);
         imageView = (ImageView) findViewById(R.id.imageView2);
         takePhotoImageView = (ImageView) findViewById(R.id.imageView4);
+
 
         //Setup
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -61,7 +69,62 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Take photo controller
+        takePhotoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        //Image Controller
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Please choose app"), 1);
+
+            }
+        });
+
     }   // Main Method
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_OK) {
+
+            Log.d("16decV1", "Resilt OK");
+
+            uri = data.getData();
+            changeImage(uri);
+            aBoolean = false;
+
+        } // if
+
+
+    } // onActivityResult
+
+
+    private void changeImage(Uri uri) {
+        try {
+
+            Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+            imageView.setImageBitmap(bitmap);
+
+        } catch (Exception e) {
+            Log.d("16decV1", "e changImage ==>" + e.toString());
+        }
+
+
+    }
+
+
 
     public void clickSave(View view) {
 
@@ -75,6 +138,16 @@ public class ServiceActivity extends FragmentActivity implements OnMapReadyCallb
                     getResources().getString(R.string.message_have_space),
                     R.drawable.doremon48);
             myAlert.myDialog();
+        } else if (aBoolean) {
+            //Non choose image
+            MyAlert myAlert = new MyAlert(ServiceActivity.this,
+                    getResources().getString(R.string.title_no_image),
+                    getResources().getString(R.string.message_no_image),
+                    R.drawable.kon48);
+            myAlert.myDialog();
+        } else {
+            //Data ok
+
         }
     } // click save
 
